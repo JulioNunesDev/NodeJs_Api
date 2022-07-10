@@ -9,7 +9,8 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 //Carregando rotas
 
-const index = require('../src/routes/index')
+const index = require('./routes/index')
+const product = require('./routes/product')
 
 
 
@@ -22,5 +23,6 @@ router.post('/', (req, res, next)=>{
 })
 
 app.use('/', index)
+app.use('/product', product)
 
 module.exports = app;
