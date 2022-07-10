@@ -2,10 +2,14 @@ const express = require('express')
 const app = express()
 const router = express.Router()
 const bodyParser = require('body-parser')
+//require('../database/db')
+
 
 //Configurações
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+
+
 
 //Carregando rotas
 
