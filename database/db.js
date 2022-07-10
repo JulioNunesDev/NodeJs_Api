@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
-mongoose.connect("mongodb+srv://teste:teste@apicluster.geygt.mongodb.net/?retryWrites=true&w=majority",{
+const user = process.env.MONGO_USER
+const pass = process.env.MONGO_PASS
+mongoose.connect(`mongodb+srv://${user}:${pass}@apicluster.geygt.mongodb.net/?retryWrites=true&w=majority`,{
     useNewUrlParser: true, useUnifiedTopology: true
 }).then(()=>{
     console.log('Conexão com sucesso ao MongoDB');
