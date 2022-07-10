@@ -1,14 +1,26 @@
 const express = require('express')
 const app = express()
 const router = express.Router()
+const bodyParser = require('body-parser')
 
-router.get('/', (req, res, next)=>{
-    res.status(200).send({
-        title: 'Node Api',
-        version: '0.0.1'
-    })
+//Configurações
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
+
+//Carregando rotas
+
+const index = require('../src/routes/index')
+
+
+
+const data = {
+    id: 123,
+    name: 'julio'
+}
+router.post('/', (req, res, next)=>{
+    res.status(200).send(data)
 })
 
-app.use('/', router)
+app.use('/', index)
 
 module.exports = app;

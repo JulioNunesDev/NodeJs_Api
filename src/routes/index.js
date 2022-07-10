@@ -1,0 +1,9 @@
+const express = require('express')
+const { route } = require('../app')
+const router = express.Router()
+
+router.get('/', (req, res, next)=>{
+    res.send({title: 'Node API', version: '0.0.2'})
+ })
+
+ module.exports = router;
