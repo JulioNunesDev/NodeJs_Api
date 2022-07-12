@@ -3,44 +3,50 @@ const Product = require('../../models/Product')
 const ValidatorProduct = require('../../validators/fluent-validator')
 const Repository = require('../../repositories/product-repository')
 
-exports.get = (req, res, next)=>{
-    Repository.get()
-    .then((produt)=>{
-        res.status(200).send(produt)
-    }).catch((err)=>{
-        res.status(201).send(err)
-    })
+exports.get = async (req, res, next)=>{
+    try {
+        var data = await Repository.get()
+        res.status(200).send(data)
+    } catch (error) {
+        res.status(500).send({message: 'Falha ao requisitar Dados'})
+    }
+    
     
 }
 
-exports.getBySlug = (req, res, next)=>{
-   Repository.getBySlug(req.params.slug)
-    .then((produt)=>{
-        res.status(200).send(produt)
-    }).catch((err)=>{
-        res.status(201).send(err)
+exports.getBySlug = async (req, res, next)=>{
+try {
+    const data = await  Repository.getBySlug(req.params.slug)
+    res.status(200).send(data)
+} catch (error) {
+    res.status(400).send({
+        message: 'Erro ao requisitar dados'
     })
 }
+    
+}
 
-exports.getById = (req, res, next)=>{
-   Repository.getById(req.params.id)
-    .then((produt)=>{
-        res.status(200).send(produt)
-    }).catch((err)=>{
-        res.status(201).send(err)
-    })
+exports.getById = async (req, res, next)=>{
+  try {
+    const data = await Repository.getById(req.params.id)
+    res.status(200).send(data)
+  } catch (error) {
+    res.status(500).send({message: 'Nao foi possivel fazer a requisição'})
+  }
+    
 }
 
 
-exports.getByTag = (req, res, next)=>{
-    Repository.getByTag(req.params.tag).then((produt)=>{
-        res.status(200).send(produt)
-    }).catch((err)=>{
-        res.status(201).send(err)
-    })
+exports.getByTag = async (req, res, next)=>{
+  try {
+    const data = await Repository.getByTag(req.params.tag)
+    res.status(200).send(data)
+  } catch (error) {
+    res.status(500).send({message: 'Nao foi possivel fazer a requisição'})
+  }
 }
 
-exports.post = (req, res, next)=>{
+exports.post = async (req, res, next)=>{
     const Validador = new ValidatorProduct()
     Validador.hasMinLen(req.body.title, 3 ,'O titulo deve conter pelo menos 3 caracteres')
 
@@ -50,31 +56,30 @@ exports.post = (req, res, next)=>{
         return
     }
 
-    Repository
-    .create(req.body)
-    .then((produt)=>{
-        res.status(201).send({message: 'Produto criado com sucesso!'})
-    }).catch((err)=>{
-        res.status(201).send({message: "Nao foi possivel criar produto!", data: err})
-    })
+    try {
+        await Repository.create(req.body)
+        res.status(200).send({message: 'Enviado com sucesso'})
+    } catch (error) {
+        res.status(200).send({message: 'Falha ao enviar Produto'})
+    }
+   
+    
 }
 
-exports.put = (req, res, next)=>{
-    Repository.update(req.params.id, req.body)
-    .then((produt)=>{
+exports.put = async (req, res, next)=>{
+    try {
+        await Repository.update(req.params.id, req.body)
         res.status(200).send({message: 'Produto Atualizado com sucesso!'})
-    })
-    .catch((err)=>{
+    } catch (error) {
         res.status(400).send({message: 'Falha ao Atualizar o produto!', data: err});
-    })
+    }
 }
 
-exports.delete = (req, res, next)=>{
-    Repository.delete(id)
-    .then((produt)=>{
-          res.status(200).send({message: 'Produto Removido com sucesso!'})
-      })
-      .catch((err)=>{
-          res.status(400).send({message: 'Falha ao Remover o produto!', data: err});
-      })
+exports.delete = async (req, res, next)=>{
+    try {
+        await Repository.delete(id)
+        res.status(200).send({message: 'Produto Removido com sucesso!'})
+    } catch (error) {
+        res.status(400).send({message: 'Falha ao Remover o produto!', data: err});
+    }
 }
